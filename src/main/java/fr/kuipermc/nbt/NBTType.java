@@ -31,6 +31,20 @@ public enum NBTType {
      * double-precision floating point number (<a href="https://en.wikipedia.org/wiki/NaN">NaN</a> possible)
      */
     DOUBLE((byte) 6),
+    /**
+     * A length-prefixed array of <b>signed</b> bytes. The prefix is a <b>signed</b> integer (thus 4 bytes)
+     */
+    BYTE_ARRAY((byte) 7),
+    /**
+     * A length-prefixed array of <b>signed</b> integers.
+     * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 4 byte integers.
+     */
+    INT_ARRAY((byte) 11),
+    /**
+     * A length-prefixed array of <b>signed</b> longs.
+     * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 8 byte longs.
+     */
+    LONG_ARRAY((byte) 12)
     ;
     private final byte id;
 

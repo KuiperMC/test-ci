@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Represents a NBT tag
@@ -68,6 +67,16 @@ public sealed class NBTTag<T>
     @Override
     public String toString() {
         String value = this.value == null ? null : this.value.toString();
+        if (this instanceof NBTIntArray array) {
+            value = Arrays.toString(array.getValue());
+        } else if (this instanceof NBTLongArray array) {
+            value = Arrays.toString(array.getValue());
+        } else if (this instanceof NBTByteArray array) {
+            value = Arrays.toString(array.getValue());
+        }
+        else if (this instanceof NBTEnd) {
+            return this.getClass().getSimpleName() + "{}";
+        }
         return this.getClass().getSimpleName() + "{" +
                 "name='" + name + '\'' +
                 ", value=" + value +
@@ -91,6 +100,18 @@ public sealed class NBTTag<T>
      */
     public String toUncompressed(int indent) {
         StringBuilder builder = new StringBuilder("\t".repeat(indent) + type.toUncompressed() + "(" + (name == null ? "None" : "'" + name + "'") + "): ");
+        if (this instanceof NBTIntArray array) {
+            builder.append("[").append(String.join(", ", Arrays.stream(array.getValue())
+                    .mapToObj(String::valueOf).toList())).append("]");
+        } else if (this instanceof NBTLongArray array) {
+            builder.append("[").append(String.join(", ", Arrays.stream(array.getValue())
+                    .mapToObj(String::valueOf).toList())).append("]");
+        } else if (this instanceof NBTByteArray array) {
+            builder.append("[").append(String.join(", ", array.stream()
+                    .map(String::valueOf).toList())).append("]");
+        } else {
+            builder.append(value);
+        }
         return builder.toString();
     }
 
@@ -131,7 +152,22 @@ public sealed class NBTTag<T>
                 bytes.add((byte) b);
             }
         })) {
-            if (this instanceof NBTByte b && b.getValue() != null) {
+            if (this instanceof NBTIntArray array && array.getValue() != null) {
+                dos.writeInt(array.getValue().length);
+                for (int i : array.getValue()) {
+                    dos.writeInt(i);
+                }
+            } else if (this instanceof NBTLongArray array && array.getValue() != null) {
+                dos.writeInt(array.getValue().length);
+                for (long l : array.getValue()) {
+                    dos.writeLong(l);
+                }
+            } else if (this instanceof NBTByteArray array && array.getValue() != null) {
+                dos.writeInt(array.getValue().length);
+                for (byte b : array.getValue()) {
+                    dos.writeByte(b);
+                }
+            } else if (this instanceof NBTByte b && b.getValue() != null) {
                 dos.writeByte(b.getValue());
             } else if (this instanceof NBTDouble d && d.getValue() != null) {
                 dos.writeDouble(d.getValue());
@@ -179,6 +215,9 @@ public sealed class NBTTag<T>
             case LONG -> new NBTLong(dis);
             case FLOAT -> new NBTFloat(dis);
             case DOUBLE -> new NBTDouble(dis);
+            case BYTE_ARRAY -> new NBTByteArray(dis);
+            case INT_ARRAY -> new NBTIntArray(dis);
+            case LONG_ARRAY -> new NBTLongArray(dis);
         };
     }
 
@@ -190,6 +229,9 @@ public sealed class NBTTag<T>
             case LONG -> new NBTLong(name, dis);
             case FLOAT -> new NBTFloat(name, dis);
             case DOUBLE -> new NBTDouble(name, dis);
+            case BYTE_ARRAY -> new NBTByteArray(name, dis);
+            case INT_ARRAY -> new NBTIntArray(name, dis);
+            case LONG_ARRAY -> new NBTLongArray(name, dis);
         };
     }
 
