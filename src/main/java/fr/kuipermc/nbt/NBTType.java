@@ -36,6 +36,11 @@ public enum NBTType {
      */
     BYTE_ARRAY((byte) 7),
     /**
+     * A length-prefixed <a href="https://docs.oracle.com/javase/8/docs/api/java/io/DataInput.html#modified-utf-8">modified UTF-8</a> string.
+     * The prefix is a <b>unsigned</b> short (thus 2 bytes) signifying the length of the string in bytes
+     */
+    STRING((byte) 8),
+    /**
      * A length-prefixed array of <b>signed</b> integers.
      * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 4 byte integers.
      */

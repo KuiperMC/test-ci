@@ -67,6 +67,9 @@ public sealed class NBTTag<T>
     @Override
     public String toString() {
         String value = this.value == null ? null : this.value.toString();
+        if (this instanceof NBTString) {
+            value = "'" + value + "'";
+        } else
         if (this instanceof NBTIntArray array) {
             value = Arrays.toString(array.getValue());
         } else if (this instanceof NBTLongArray array) {
@@ -100,7 +103,9 @@ public sealed class NBTTag<T>
      */
     public String toUncompressed(int indent) {
         StringBuilder builder = new StringBuilder("\t".repeat(indent) + type.toUncompressed() + "(" + (name == null ? "None" : "'" + name + "'") + "): ");
-        if (this instanceof NBTIntArray array) {
+        if (this instanceof NBTString string) {
+            builder.append("'").append(string.getValue()).append("'");
+        } else if (this instanceof NBTIntArray array) {
             builder.append("[").append(String.join(", ", Arrays.stream(array.getValue())
                     .mapToObj(String::valueOf).toList())).append("]");
         } else if (this instanceof NBTLongArray array) {
@@ -152,7 +157,9 @@ public sealed class NBTTag<T>
                 bytes.add((byte) b);
             }
         })) {
-            if (this instanceof NBTIntArray array && array.getValue() != null) {
+            if (this instanceof NBTString string && string.getValue() != null) {
+                dos.writeUTF(string.getValue());
+            } else if (this instanceof NBTIntArray array && array.getValue() != null) {
                 dos.writeInt(array.getValue().length);
                 for (int i : array.getValue()) {
                     dos.writeInt(i);
@@ -216,6 +223,7 @@ public sealed class NBTTag<T>
             case FLOAT -> new NBTFloat(dis);
             case DOUBLE -> new NBTDouble(dis);
             case BYTE_ARRAY -> new NBTByteArray(dis);
+            case STRING -> new NBTString(dis);
             case INT_ARRAY -> new NBTIntArray(dis);
             case LONG_ARRAY -> new NBTLongArray(dis);
         };
@@ -230,6 +238,7 @@ public sealed class NBTTag<T>
             case FLOAT -> new NBTFloat(name, dis);
             case DOUBLE -> new NBTDouble(name, dis);
             case BYTE_ARRAY -> new NBTByteArray(name, dis);
+            case STRING -> new NBTString(name, dis);
             case INT_ARRAY -> new NBTIntArray(name, dis);
             case LONG_ARRAY -> new NBTLongArray(name, dis);
         };
