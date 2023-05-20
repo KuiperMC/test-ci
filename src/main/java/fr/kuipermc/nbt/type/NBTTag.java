@@ -131,6 +131,19 @@ public sealed class NBTTag<T>
                 bytes.add((byte) b);
             }
         })) {
+            if (this instanceof NBTByte b && b.getValue() != null) {
+                dos.writeByte(b.getValue());
+            } else if (this instanceof NBTDouble d && d.getValue() != null) {
+                dos.writeDouble(d.getValue());
+            } else if (this instanceof NBTFloat f && f.getValue() != null) {
+                dos.writeFloat(f.getValue());
+            } else if (this instanceof NBTInt i && i.getValue() != null) {
+                dos.writeInt(i.getValue());
+            } else if (this instanceof NBTLong l && l.getValue() != null) {
+                dos.writeLong(l.getValue());
+            } else if (this instanceof NBTShort s && s.getValue() != null) {
+                dos.writeShort(s.getValue());
+            }
         }
         byte[] bytesArray = new byte[bytes.size()];
         for (int i = 0; i < bytes.size(); i++) {
@@ -160,11 +173,23 @@ public sealed class NBTTag<T>
 
     protected static NBTTag<?> read(DataInputStream dis, NBTType type) throws IOException {
         return switch (type) {
+            case BYTE -> new NBTByte(dis);
+            case SHORT -> new NBTShort(dis);
+            case INT -> new NBTInt(dis);
+            case LONG -> new NBTLong(dis);
+            case FLOAT -> new NBTFloat(dis);
+            case DOUBLE -> new NBTDouble(dis);
         };
     }
 
     protected static NBTTag<?> read(@Nullable String name, DataInputStream dis, NBTType type) throws IOException {
         return switch (type) {
+            case BYTE -> new NBTByte(name, dis);
+            case SHORT -> new NBTShort(name, dis);
+            case INT -> new NBTInt(name, dis);
+            case LONG -> new NBTLong(name, dis);
+            case FLOAT -> new NBTFloat(name, dis);
+            case DOUBLE -> new NBTDouble(name, dis);
         };
     }
 

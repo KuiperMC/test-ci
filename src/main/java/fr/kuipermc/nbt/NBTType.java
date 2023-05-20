@@ -5,6 +5,32 @@ import fr.kuipermc.nbt.type.NBTEnd;
 import java.util.Arrays;
 
 public enum NBTType {
+    /**
+     * A single signed byte
+     */
+    BYTE((byte) 1),
+    /**
+     * A single signed, big endian 16 bit integer
+     */
+    SHORT((byte) 2),
+    /**
+     * A single signed, big endian 32 bit integer
+     */
+    INT((byte) 3),
+    /**
+     * A single signed, big endian 64 bit integer
+     */
+    LONG((byte) 4),
+    /**
+     * A single, big endian <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE-754</a>
+     * single-precision floating point number (<a href="https://en.wikipedia.org/wiki/NaN">NaN</a> possible)
+     */
+    FLOAT((byte) 5),
+    /**
+     * A single, big endian <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE-754</a>
+     * double-precision floating point number (<a href="https://en.wikipedia.org/wiki/NaN">NaN</a> possible)
+     */
+    DOUBLE((byte) 6),
     ;
     private final byte id;
 
