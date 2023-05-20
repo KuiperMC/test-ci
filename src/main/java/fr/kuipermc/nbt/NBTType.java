@@ -41,6 +41,14 @@ public enum NBTType {
      */
     STRING((byte) 8),
     /**
+     * A list of <b>nameless</b> tags, all of the same type.
+     * The list is prefixed with the {@code Type ID} of the items it contains (thus 1 byte),
+     * and the length of the list as a <b>signed</b> integer (a further 4 bytes).
+     * If the length of the list is 0 or negative, the type may be {@link NBTType#END 0} ({@link NBTEnd TAG_End}) but otherwize it must be any other type.
+     * (The notchian implementation uses {@link NBTEnd TAG_End} in that situation, but another reference implementation by Mojang uses 1 instead; parsers should accept any type if the length us <= 0).
+     */
+    LIST((byte) 9),
+    /**
      * A length-prefixed array of <b>signed</b> integers.
      * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 4 byte integers.
      */

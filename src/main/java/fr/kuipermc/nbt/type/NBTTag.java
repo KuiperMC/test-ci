@@ -103,7 +103,16 @@ public sealed class NBTTag<T>
      */
     public String toUncompressed(int indent) {
         StringBuilder builder = new StringBuilder("\t".repeat(indent) + type.toUncompressed() + "(" + (name == null ? "None" : "'" + name + "'") + "): ");
-        if (this instanceof NBTString string) {
+        if (this instanceof NBTList<?> list) {
+            builder.append(list.size())
+                    .append(list.size() == 1 ? " entry\n" : " entries\n")
+                    .append("\t".repeat(indent))
+                    .append("{\n");
+            for (NBTTag<?> tag : list) {
+                builder.append(tag.toUncompressed(indent + 1)).append("\n");
+            }
+            builder.append("\t".repeat(indent)).append("}");
+        } else if (this instanceof NBTString string) {
             builder.append("'").append(string.getValue()).append("'");
         } else if (this instanceof NBTIntArray array) {
             builder.append("[").append(String.join(", ", Arrays.stream(array.getValue())
@@ -157,7 +166,13 @@ public sealed class NBTTag<T>
                 bytes.add((byte) b);
             }
         })) {
-            if (this instanceof NBTString string && string.getValue() != null) {
+            if (this instanceof NBTList<?> list) {
+                dos.writeByte(list.getElementType().getId());
+                dos.writeInt(list.size());
+                for (NBTTag<?> tag : list) {
+                    dos.write(tag.bytesValue());
+                }
+            } else if (this instanceof NBTString string && string.getValue() != null) {
                 dos.writeUTF(string.getValue());
             } else if (this instanceof NBTIntArray array && array.getValue() != null) {
                 dos.writeInt(array.getValue().length);
@@ -224,6 +239,7 @@ public sealed class NBTTag<T>
             case DOUBLE -> new NBTDouble(dis);
             case BYTE_ARRAY -> new NBTByteArray(dis);
             case STRING -> new NBTString(dis);
+            case LIST -> new NBTList<>(dis);
             case INT_ARRAY -> new NBTIntArray(dis);
             case LONG_ARRAY -> new NBTLongArray(dis);
         };
@@ -239,6 +255,7 @@ public sealed class NBTTag<T>
             case DOUBLE -> new NBTDouble(name, dis);
             case BYTE_ARRAY -> new NBTByteArray(name, dis);
             case STRING -> new NBTString(name, dis);
+            case LIST -> new NBTList<>(name, dis);
             case INT_ARRAY -> new NBTIntArray(name, dis);
             case LONG_ARRAY -> new NBTLongArray(name, dis);
         };
