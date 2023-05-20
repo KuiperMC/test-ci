@@ -6,6 +6,11 @@ import java.util.Arrays;
 
 public enum NBTType {
     /**
+     * Signifies the end of a {@link #COMPOUND Tag Compound}.
+     * It is only ever used inside a {@link #COMPOUND Tag Compound}, and is not named despite being in a {@link #COMPOUND Tag Compound}
+     */
+    END((byte) 0),
+    /**
      * A single signed byte
      */
     BYTE((byte) 1),
@@ -48,6 +53,10 @@ public enum NBTType {
      * (The notchian implementation uses {@link NBTEnd TAG_End} in that situation, but another reference implementation by Mojang uses 1 instead; parsers should accept any type if the length us <= 0).
      */
     LIST((byte) 9),
+    /**
+     * Effectively a list of <b>named</b> tags. Order not guaranteed.
+     */
+    COMPOUND((byte) 10),
     /**
      * A length-prefixed array of <b>signed</b> integers.
      * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 4 byte integers.

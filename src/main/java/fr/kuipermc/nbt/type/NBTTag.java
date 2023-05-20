@@ -102,6 +102,9 @@ public sealed class NBTTag<T>
      * @see #toUncompressed()
      */
     public String toUncompressed(int indent) {
+        if (this instanceof NBTEnd) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder("\t".repeat(indent) + type.toUncompressed() + "(" + (name == null ? "None" : "'" + name + "'") + "): ");
         if (this instanceof NBTList<?> list) {
             builder.append(list.size())
@@ -109,6 +112,15 @@ public sealed class NBTTag<T>
                     .append("\t".repeat(indent))
                     .append("{\n");
             for (NBTTag<?> tag : list) {
+                builder.append(tag.toUncompressed(indent + 1)).append("\n");
+            }
+            builder.append("\t".repeat(indent)).append("}");
+        } else if (this instanceof NBTCompound compound) {
+            builder.append(compound.size())
+                    .append(compound.size() == 1 ? " entry\n" : " entries\n")
+                    .append("\t".repeat(indent))
+                    .append("{\n");
+            for (NBTTag<?> tag : compound) {
                 builder.append(tag.toUncompressed(indent + 1)).append("\n");
             }
             builder.append("\t".repeat(indent)).append("}");
@@ -138,6 +150,9 @@ public sealed class NBTTag<T>
      * @apiNote this method is not thread-safe
      */
     public byte[] bytes() {
+        if (this instanceof NBTEnd) {
+            return new byte[] {type.getId()};
+        }
         List<Byte> bytes = new ArrayList<>();
         try (DataOutputStream dos = new DataOutputStream(new OutputStream() {
             @Override
@@ -172,6 +187,11 @@ public sealed class NBTTag<T>
                 for (NBTTag<?> tag : list) {
                     dos.write(tag.bytesValue());
                 }
+            } else if (this instanceof NBTCompound compound) {
+                for (NBTTag<?> tag : compound) {
+                    dos.write(tag.bytes());
+                }
+                dos.writeByte(NBTType.END.getId());
             } else if (this instanceof NBTString string && string.getValue() != null) {
                 dos.writeUTF(string.getValue());
             } else if (this instanceof NBTIntArray array && array.getValue() != null) {
@@ -231,6 +251,7 @@ public sealed class NBTTag<T>
 
     protected static NBTTag<?> read(DataInputStream dis, NBTType type) throws IOException {
         return switch (type) {
+            case END -> NBTEnd.INSTANCE;
             case BYTE -> new NBTByte(dis);
             case SHORT -> new NBTShort(dis);
             case INT -> new NBTInt(dis);
@@ -240,6 +261,7 @@ public sealed class NBTTag<T>
             case BYTE_ARRAY -> new NBTByteArray(dis);
             case STRING -> new NBTString(dis);
             case LIST -> new NBTList<>(dis);
+            case COMPOUND -> new NBTCompound(dis);
             case INT_ARRAY -> new NBTIntArray(dis);
             case LONG_ARRAY -> new NBTLongArray(dis);
         };
@@ -247,6 +269,7 @@ public sealed class NBTTag<T>
 
     protected static NBTTag<?> read(@Nullable String name, DataInputStream dis, NBTType type) throws IOException {
         return switch (type) {
+            case END -> NBTEnd.INSTANCE;
             case BYTE -> new NBTByte(name, dis);
             case SHORT -> new NBTShort(name, dis);
             case INT -> new NBTInt(name, dis);
@@ -256,6 +279,7 @@ public sealed class NBTTag<T>
             case BYTE_ARRAY -> new NBTByteArray(name, dis);
             case STRING -> new NBTString(name, dis);
             case LIST -> new NBTList<>(name, dis);
+            case COMPOUND -> new NBTCompound(name, dis);
             case INT_ARRAY -> new NBTIntArray(name, dis);
             case LONG_ARRAY -> new NBTLongArray(name, dis);
         };
