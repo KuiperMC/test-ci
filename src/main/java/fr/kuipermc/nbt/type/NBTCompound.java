@@ -163,7 +163,7 @@ public non-sealed class NBTCompound extends NBTTag<List<NBTTag<?>>> implements I
     }
 
     @Nullable
-    public <T extends NBTTag<?>> NBTList<T> getList(String name, Class<T> type) {
+    public <T extends NBTTag<?>> NBTList<T> getList(String name) {
         NBTTag<?> tag = get(name);
         return tag != null && tag.getType() == NBTType.LIST ? (NBTList<T>) tag : null;
     }

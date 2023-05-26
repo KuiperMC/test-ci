@@ -308,7 +308,7 @@ class NBTCompoundTest {
 
     @Test
     void getListWithTP() {
-        assertEquals(Collections.singletonList(new NBTString("string", "String")), nbt.getList("list", NBTString.class).getValue());
+        assertEquals(Collections.singletonList(new NBTString("string", "String")), nbt.getList("list").getValue());
     }
 
     @Test
