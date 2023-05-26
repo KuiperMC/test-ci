@@ -15,8 +15,8 @@ class NBTFloatTest {
     }
 
     @Test
-    void getValue() {
-        assertEquals(1.0f, nbt.getValue());
+    void getFloat() {
+        assertEquals(1.0f, nbt.getFloat());
     }
 
     @Test

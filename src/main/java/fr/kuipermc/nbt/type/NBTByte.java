@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * A single signed byte
  */
-public non-sealed class NBTByte extends NBTTag<Byte> {
+public non-sealed class NBTByte extends NBTNumber<Byte> {
     /**
      * Create a new NBT tag
      *

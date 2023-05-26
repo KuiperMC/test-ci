@@ -15,8 +15,9 @@ import java.util.List;
  * @param <T> the type of the value
  */
 public sealed class NBTTag<T>
-        permits NBTByte, NBTByteArray, NBTCompound, NBTDouble, NBTEnd, NBTFloat, NBTInt, NBTIntArray, NBTList, NBTLong,
-        NBTLongArray, NBTShort, NBTString {
+        permits NBTNumber,
+        NBTByteArray, NBTCompound, NBTEnd, NBTIntArray, NBTList,
+        NBTLongArray, NBTString {
     @Nullable protected final String name;
     @Nullable protected final T value;
     @NotNull protected final NBTType type;

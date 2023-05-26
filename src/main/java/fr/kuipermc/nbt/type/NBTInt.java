@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * A single signed, big endian 32 bit integer
  */
-public non-sealed class NBTInt extends NBTTag<Integer> {
+public non-sealed class NBTInt extends NBTNumber<Integer> {
     /**
      * Create a new NBT tag
      *

@@ -15,8 +15,8 @@ class NBTLongTest {
     }
 
     @Test
-    void getValue() {
-        assertEquals(1L, nbt.getValue());
+    void getLong() {
+        assertEquals(1L, nbt.getLong());
     }
 
     @Test

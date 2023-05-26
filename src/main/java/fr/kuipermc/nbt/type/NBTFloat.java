@@ -10,7 +10,7 @@ import java.io.IOException;
  * A single, big endian <a href="http://en.wikipedia.org/wiki/IEEE_754-2008">IEEE-754</a>
  * single-precision floating point number (<a href="http://en.wikipedia.org/wiki/NaN">NaN</a> possible)
  */
-public non-sealed class NBTFloat extends NBTTag<Float> {
+public non-sealed class NBTFloat extends NBTNumber<Float> {
     /**
      * Create a new NBT tag
      *

@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * A single signed, big endian 16 bit integer
  */
-public non-sealed class NBTShort extends NBTTag<Short> {
+public non-sealed class NBTShort extends NBTNumber<Short> {
     /**
      * Create a new NBT tag
      *

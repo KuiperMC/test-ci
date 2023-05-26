@@ -15,8 +15,8 @@ class NBTShortTest {
     }
 
     @Test
-    void getValue() {
-        assertEquals((short) 1, nbt.getValue());
+    void getShort() {
+        assertEquals((short) 1, nbt.getShort());
     }
 
     @Test

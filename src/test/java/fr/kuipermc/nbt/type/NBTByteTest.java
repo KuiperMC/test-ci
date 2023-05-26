@@ -17,8 +17,8 @@ class NBTByteTest {
     }
 
     @Test
-    void getValue() {
-        assertEquals((byte) 1, nbt.getValue());
+    void getByte() {
+        assertEquals((byte) 1, nbt.getByte());
     }
 
     @Test

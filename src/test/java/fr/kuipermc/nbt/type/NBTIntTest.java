@@ -15,8 +15,8 @@ class NBTIntTest {
     }
 
     @Test
-    void getValue() {
-        assertEquals(1, nbt.getValue());
+    void getInt() {
+        assertEquals(1, nbt.getInt());
     }
 
     @Test

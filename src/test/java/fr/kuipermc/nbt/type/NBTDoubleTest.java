@@ -15,8 +15,8 @@ class NBTDoubleTest {
     }
 
     @Test
-    void getValue() {
-        assertEquals(1.0, nbt.getValue());
+    void getDouble() {
+        assertEquals(1.0, nbt.getDouble());
     }
 
     @Test

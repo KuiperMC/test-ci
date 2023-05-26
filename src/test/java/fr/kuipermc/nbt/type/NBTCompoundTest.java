@@ -241,12 +241,12 @@ class NBTCompoundTest {
 
     @Test
     void get() {
-        assertEquals((byte) 1, ((NBTByte) nbt.get("byte")).getValue());
-        assertEquals((short) 2, ((NBTShort) nbt.get("short")).getValue());
-        assertEquals(3, ((NBTInt) nbt.get("int")).getValue());
-        assertEquals(4L, ((NBTLong) nbt.get("long")).getValue());
-        assertEquals(5.0f, ((NBTFloat) nbt.get("float")).getValue());
-        assertEquals(6.0, ((NBTDouble) nbt.get("double")).getValue());
+        assertEquals((byte) 1, ((NBTByte) nbt.get("byte")).getByte());
+        assertEquals((short) 2, ((NBTShort) nbt.get("short")).getShort());
+        assertEquals(3, ((NBTInt) nbt.get("int")).getInt());
+        assertEquals(4L, ((NBTLong) nbt.get("long")).getLong());
+        assertEquals(5.0f, ((NBTFloat) nbt.get("float")).getFloat());
+        assertEquals(6.0, ((NBTDouble) nbt.get("double")).getDouble());
         assertArrayEquals(new byte[]{7, 8, 9}, ((NBTByteArray) nbt.get("byteArray")).getValue());
         assertEquals("Bananrama", ((NBTString) nbt.get("string")).getValue());
         assertEquals(Collections.singletonList(new NBTString("string", "String")), ((NBTList) nbt.get("list")).getValue());
@@ -257,12 +257,12 @@ class NBTCompoundTest {
 
     @Test
     void getWithType() {
-        assertEquals((byte) 1, ((NBTByte) nbt.get("byte", NBTType.BYTE)).getValue());
-        assertEquals((short) 2, ((NBTShort) nbt.get("short", NBTType.SHORT)).getValue());
-        assertEquals(3, ((NBTInt) nbt.get("int", NBTType.INT)).getValue());
-        assertEquals(4L, ((NBTLong) nbt.get("long", NBTType.LONG)).getValue());
-        assertEquals(5.0f, ((NBTFloat) nbt.get("float", NBTType.FLOAT)).getValue());
-        assertEquals(6.0, ((NBTDouble) nbt.get("double", NBTType.DOUBLE)).getValue());
+        assertEquals((byte) 1, ((NBTByte) nbt.get("byte", NBTType.BYTE)).getByte());
+        assertEquals((short) 2, ((NBTShort) nbt.get("short", NBTType.SHORT)).getShort());
+        assertEquals(3, ((NBTInt) nbt.get("int", NBTType.INT)).getInt());
+        assertEquals(4L, ((NBTLong) nbt.get("long", NBTType.LONG)).getLong());
+        assertEquals(5.0f, ((NBTFloat) nbt.get("float", NBTType.FLOAT)).getFloat());
+        assertEquals(6.0, ((NBTDouble) nbt.get("double", NBTType.DOUBLE)).getDouble());
         assertArrayEquals(new byte[]{7, 8, 9}, ((NBTByteArray) nbt.get("byteArray", NBTType.BYTE_ARRAY)).getValue());
         assertEquals("Bananrama", ((NBTString) nbt.get("string", NBTType.STRING)).getValue());
         assertEquals(Collections.singletonList(new NBTString("string", "String")), ((NBTList) nbt.get("list", NBTType.LIST)).getValue());
@@ -273,32 +273,32 @@ class NBTCompoundTest {
 
     @Test
     void getByte() {
-        assertEquals((byte) 1, nbt.getByte("byte").getValue());
+        assertEquals((byte) 1, nbt.getByte("byte").getByte());
     }
 
     @Test
     void getShort() {
-        assertEquals((short) 2, nbt.getShort("short").getValue());
+        assertEquals((short) 2, nbt.getShort("short").getShort());
     }
 
     @Test
     void getInt() {
-        assertEquals(3, nbt.getInt("int").getValue());
+        assertEquals(3, nbt.getInt("int").getInt());
     }
 
     @Test
     void getLong() {
-        assertEquals(4L, nbt.getLong("long").getValue());
+        assertEquals(4L, nbt.getLong("long").getLong());
     }
 
     @Test
     void getFloat() {
-        assertEquals(5.0f, nbt.getFloat("float").getValue());
+        assertEquals(5.0f, nbt.getFloat("float").getFloat());
     }
 
     @Test
     void getDouble() {
-        assertEquals(6.0, nbt.getDouble("double").getValue());
+        assertEquals(6.0, nbt.getDouble("double").getDouble());
     }
 
     @Test
