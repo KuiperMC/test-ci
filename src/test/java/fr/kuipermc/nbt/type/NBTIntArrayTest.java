@@ -25,6 +25,11 @@ class NBTIntArrayTest {
     }
 
     @Test
+    void length() {
+        assertEquals(3, nbt.length());
+    }
+
+    @Test
     void testToString() {
         assertEquals("NBTIntArray{name='test', value=[1, 2, 3]}", nbt.toString());
     }

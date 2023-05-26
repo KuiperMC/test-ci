@@ -11,7 +11,7 @@ import java.util.Objects;
  * A length-prefixed array of <b>signed</b> longs.
  * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 8 byte longs.
  */
-public non-sealed class NBTLongArray extends NBTTag<long[]> {
+public non-sealed class NBTLongArray extends NBTArray<long[]> {
     /**
      * Create a new NBT tag
      *

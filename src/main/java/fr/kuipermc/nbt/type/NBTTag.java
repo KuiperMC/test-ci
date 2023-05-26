@@ -15,9 +15,8 @@ import java.util.List;
  * @param <T> the type of the value
  */
 public sealed class NBTTag<T>
-        permits NBTNumber,
-        NBTByteArray, NBTCompound, NBTEnd, NBTIntArray, NBTList,
-        NBTLongArray, NBTString {
+        permits NBTArray, NBTNumber,
+        NBTCompound, NBTEnd, NBTList, NBTString {
     @Nullable protected final String name;
     @Nullable protected final T value;
     @NotNull protected final NBTType type;
@@ -70,15 +69,7 @@ public sealed class NBTTag<T>
         String value = this.value == null ? null : this.value.toString();
         if (this instanceof NBTString) {
             value = "'" + value + "'";
-        } else
-        if (this instanceof NBTIntArray array) {
-            value = Arrays.toString(array.getValue());
-        } else if (this instanceof NBTLongArray array) {
-            value = Arrays.toString(array.getValue());
-        } else if (this instanceof NBTByteArray array) {
-            value = Arrays.toString(array.getValue());
-        }
-        else if (this instanceof NBTEnd) {
+        } else if (this instanceof NBTEnd) {
             return this.getClass().getSimpleName() + "{}";
         }
         return this.getClass().getSimpleName() + "{" +
@@ -89,6 +80,7 @@ public sealed class NBTTag<T>
 
     /**
      * Get the compressed string representation of this tag
+     *
      * @return the compressed string representation of this tag
      * @see #toUncompressed(int)
      */
@@ -98,6 +90,7 @@ public sealed class NBTTag<T>
 
     /**
      * Get the uncompressed string representation of this tag
+     *
      * @param indent the indentation level
      * @return the uncompressed string representation of this tag
      * @see #toUncompressed()
@@ -127,15 +120,8 @@ public sealed class NBTTag<T>
             builder.append("\t".repeat(indent)).append("}");
         } else if (this instanceof NBTString string) {
             builder.append("'").append(string.getValue()).append("'");
-        } else if (this instanceof NBTIntArray array) {
-            builder.append("[").append(String.join(", ", Arrays.stream(array.getValue())
-                    .mapToObj(String::valueOf).toList())).append("]");
-        } else if (this instanceof NBTLongArray array) {
-            builder.append("[").append(String.join(", ", Arrays.stream(array.getValue())
-                    .mapToObj(String::valueOf).toList())).append("]");
-        } else if (this instanceof NBTByteArray array) {
-            builder.append("[").append(String.join(", ", array.stream()
-                    .map(String::valueOf).toList())).append("]");
+        } else if (this instanceof NBTArray<?> array) {
+            builder.append(array.valueToString());
         } else {
             builder.append(value);
         }
@@ -146,13 +132,12 @@ public sealed class NBTTag<T>
      * Get the bytes of the tag
      *
      * @return the bytes of the tag
-     *
-     * @see <a href="https://wiki.vg/NBT#Specification">NBT specification</a>
      * @apiNote this method is not thread-safe
+     * @see <a href="https://wiki.vg/NBT#Specification">NBT specification</a>
      */
     public byte[] bytes() {
         if (this instanceof NBTEnd) {
-            return new byte[] {type.getId()};
+            return new byte[]{type.getId()};
         }
         List<Byte> bytes = new ArrayList<>();
         try (DataOutputStream dos = new DataOutputStream(new OutputStream() {

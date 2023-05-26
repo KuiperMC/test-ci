@@ -153,6 +153,22 @@ public non-sealed class NBTCompound extends NBTTag<List<NBTTag<?>>> implements I
      * Get a tag from this compound
      *
      * @param name the name of the tag
+     * @return the tag, or null if not found
+     */
+    @Nullable
+    public <T extends Number> NBTNumber<T> getNumber(String name) {
+        NBTTag<?> tag = get(name);
+        return tag != null &&
+                (tag.getType() == NBTType.BYTE || tag.getType() == NBTType.SHORT
+                        || tag.getType() == NBTType.INT || tag.getType() == NBTType.LONG
+                        || tag.getType() == NBTType.FLOAT || tag.getType() == NBTType.DOUBLE)
+                ? (NBTNumber<T>) tag : null;
+    }
+
+    /**
+     * Get a tag from this compound
+     *
+     * @param name the name of the tag
      * @param type the type of the tag
      * @return the tag, or null if not found
      */
@@ -215,6 +231,20 @@ public non-sealed class NBTCompound extends NBTTag<List<NBTTag<?>>> implements I
     }
 
     /**
+     * Get a tag from this compound
+     *
+     * @param name the name of the tag
+     * @return the tag, or null if not found
+     */
+    @Nullable
+    public <T> NBTArray<T> getArray(String name) {
+        NBTTag<?> tag = get(name);
+        return tag != null &&
+                (tag.getType() == NBTType.BYTE_ARRAY || tag.getType() == NBTType.INT_ARRAY || tag.getType() == NBTType.LONG_ARRAY)
+                ? (NBTArray<T>) tag : null;
+    }
+
+    /**
      * Get the size of this compound
      *
      * @return the size
@@ -223,9 +253,10 @@ public non-sealed class NBTCompound extends NBTTag<List<NBTTag<?>>> implements I
         return getValue() == null ? 0 : getValue().size();
     }
 
+
     @NotNull
     @Override
     public Iterator<NBTTag<?>> iterator() {
-        return (Iterator<NBTTag<?>>) value.iterator();
+        return value.iterator();
     }
 }

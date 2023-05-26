@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * A length-prefixed array of <b>signed</b> bytes. The prefix is a <b>signed</b> integer (thus 4 bytes)
  */
-public non-sealed class NBTByteArray extends NBTTag<byte[]> {
+public non-sealed class NBTByteArray extends NBTArray<byte[]> {
     /**
      * Create a new NBT tag
      *

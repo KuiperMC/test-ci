@@ -10,7 +10,7 @@ import java.io.IOException;
  * A length-prefixed array of <b>signed</b> integers.
  * The prefix is a <b>signed</b> integer (thus 4 bytes) and indicates the number of 4 byte integers.
  */
-public non-sealed class NBTIntArray extends NBTTag<int[]> {
+public non-sealed class NBTIntArray extends NBTArray<int[]> {
     /**
      * Create a new NBT tag
      *

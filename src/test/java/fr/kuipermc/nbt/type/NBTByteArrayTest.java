@@ -39,6 +39,11 @@ class NBTByteArrayTest {
     }
 
     @Test
+    void length() {
+        assertEquals(3, nbt.length());
+    }
+
+    @Test
     void bytes() {
         assertArrayEquals(new byte[]{
                 0x07, // NBTType.BYTE_ARRAY
