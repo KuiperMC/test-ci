@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'fr.kuipermc'
-version = '1.0-SNAPSHOT'
+version = rootProject.file('version.txt').text.trim()
 
 repositories {
     mavenCentral()
@@ -13,6 +14,29 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.0.0'
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://m2.enimaloc.fr/${if (version.toString().endsWith("-SNAPSHOT")) "snapshots" else "releases"}")
+            credentials {
+                username = System.getenv("MAVEN_NAME") ?: property("mavenUsername").toString()
+                password = System.getenv("MAVEN_TOKEN") ?: property("mavenPassword").toString()
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+//            groupId = "com.example"
+//            artifactId = "library"
+//            version = "1.0.0"
+            from components.java
+        }
+    }
 }
 
 test {
