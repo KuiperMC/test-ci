@@ -19,7 +19,7 @@ dependencies {
 publishing {
     repositories {
         maven {
-            url = uri("https://m2.enimaloc.fr/${if (version.toString().endsWith("-SNAPSHOT")) "snapshots" else "releases"}")
+            url = uri("https://m2.enimaloc.fr/${if (version.toString().endsWith("-SNAPSHOT")) "snapshots" else if (version.toString() ==~ /\\b[0-9a-f]{5,40}\\b/) "github" else "releases"}")
             credentials {
                 username = System.getenv("MAVEN_NAME") ?: property("mavenUsername").toString()
                 password = System.getenv("MAVEN_TOKEN") ?: property("mavenPassword").toString()
