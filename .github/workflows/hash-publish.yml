@@ -1,0 +1,26 @@
+name: Publish Hash on repository
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - master
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 18
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Replace version per hash
+        run: sed -i "s/version = .*/version = '$(git rev-parse --short HEAD)'/" build.gradle
+      - name: Publish with Gradle
+        run: ./gradlew build publish
+        env:
+          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
+          MAVEN_TOKEN: ${{ secrets.MAVEN_TOKEN }}
